@@ -184,8 +184,6 @@ function askForUrl() {
                     axios.get(url, { headers })
                         .then((response) => {
                             if (response.status === 503) {
-                                console.log("BOOM BAGSAK ANG GAGO HAHAHA 🤣🤣");
-                            } else {
                             }
                         })
                         .catch((error) => {
