@@ -148,26 +148,32 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
-console.log(`\x1b[31m
-██████╗ ██████╗  ██████╗ ███████╗
+console.log('\x1b[31m' +
+`██████╗ ██████╗  ██████╗ ███████╗
 ██╔══██╗██╔══██╗██╔═══██╗██╔════╝
 ██║  ██║██║  ██║██║   ██║███████╗
 ██║  ██║██║  ██║██║   ██║╚════██║
 ██████╔╝██████╔╝╚██████╔╝███████║
 ╚═════╝ ╚═════╝  ╚═════╝ ╚══════╝
-\x1b[0m
-\x1b[32mPaalala: Huwag atakihin ang mga pampublikong o institusyon. Mangyaring mag-ingat sa paggamit ng DDoS tool.
-\x1b[0m
-\x1b[2mVersion 2.2 | Made by Joshua Apostol
-\x1b[0m
-`);
+
+` + '\033[38;5;196m───────────────────────────────────────────\n' +
+'\033[38;5;196m[\033[38;5;46m+\033[38;5;196m]\033[38;5;46m VERSION  \033[38;5;196m : \033[38;5;46m2.2\n' +
+'\033[38;5;196m[\033[38;5;46m+\033[38;5;196m]\033[38;5;46m AUTHOR   \033[38;5;196m : \033[38;5;46mJoshua Apostol\n' +
+'\033[38;5;196m───────────────────────────────────────────\n' +
+'\033[38;5;196m[\033[38;5;46m!]\033[38;5;196m DONT ATTACK: Government Websites\n' +
+'\033[38;5;196m[\033[38;5;46m!]\033[38;5;196m DONT ATTACK: Education Websites\n───────────────────────────────────────────\x1b[0m');
 
 function askForUrl() {
     rl.question(`\x1b[31m┌─[ \x1b[32m[TARGET URL]\x1b[31m ]─────[ # ]\x1b[0m\n\x1b[31m└─[ \x1b[32m\W\x1b[31m ]────► \x1b[0m`, (url) => {
         if (!url.startsWith("http://") && !url.startsWith("https://")) {
             console.log("Invalid URL. Please enter a valid URL.");
             askForUrl();
-        } else {           console.log(`\n\n\x1b[31mWebsite is under attack: ${url}\x1b[0m`);
+        } else {
+            console.log("\033[38;5;196m");
+            console.log("===========================================");
+            console.log("        DDoS now flooding the server");
+            console.log("===================KIFFY===================");
+            console.log("\033[0m");
             let continueAttack = true;
             const maxRequests = 10000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;
             const requestsPerSecond = 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000;
@@ -212,4 +218,4 @@ function askForUrl() {
     });
 }
 
-askForUrl();
+askForUrl(); 
