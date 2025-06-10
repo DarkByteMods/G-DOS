@@ -11,10 +11,10 @@ cloudshell✅️
 npm install axios && socks-proxy-agent && https-proxy-agent && readline
 ```
 ```
-git clone https://github.com/joshuaApostol2/Nash-ddos
+git clone https://github.com/DarkByteMods/G-DOS
 ```
 ```
-cd Nash-ddos
+cd G-DOS
 ```
 ```
 node index.js
